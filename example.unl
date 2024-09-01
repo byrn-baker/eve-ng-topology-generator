@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="example" id="fdf1f563-10f0-4596-9ae6-57407451d2f0" version="1" scripttimeout="300" countdown="0" linkwidth="2" lock="0" grid="1" sat="-1">
+  <topology>
+    <nodes>
+      <node id="1" name="R1" type="iol" template="iol" image="x86_64_crb_linux-adventerprisek9-ms.bin" ethernet="1" nvram="1024" ram="1024" serial="0" keepalive="0" delay="0" sat="-1" icon="Router-2D-Gen-White-S.svg" config="0" left="648" top="360">
+        <interface id="0" name="e0/0" type="ethernet" network_id="1" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="16" name="e0/1" type="ethernet" network_id="3" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="32" name="e0/2" type="ethernet" network_id="5" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+      </node>
+      <node id="2" name="R2" type="iol" template="iol" image="x86_64_crb_linux-adventerprisek9-ms.bin" ethernet="1" nvram="1024" ram="1024" serial="0" keepalive="0" delay="0" sat="-1" icon="Router-2D-Gen-White-S.svg" config="0" left="981" top="366">
+        <interface id="0" name="e0/0" type="ethernet" network_id="1" vid="1" color="#3e7089" style="Solid" linkstyle="Straight" label="10.1.12.0/24" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="16" name="e0/1" type="ethernet" network_id="4" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="32" name="e0/2" type="ethernet" network_id="6" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+      </node>
+      <node id="3" name="R3" type="iol" template="iol" image="x86_64_crb_linux-adventerprisek9-ms.bin" ethernet="1" nvram="1024" ram="1024" serial="0" keepalive="0" delay="0" sat="-1" icon="Router-2D-Gen-White-S.svg" config="0" left="651" top="681">
+        <interface id="0" name="e0/0" type="ethernet" network_id="2" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="16" name="e0/1" type="ethernet" network_id="3" vid="1" color="#3e7089" style="Solid" linkstyle="Straight" label="10.1.13.0/24" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="32" name="e0/2" type="ethernet" network_id="6" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+      </node>
+      <node id="4" name="R4" type="iol" template="iol" image="x86_64_crb_linux-adventerprisek9-ms.bin" ethernet="1" nvram="1024" ram="1024" serial="0" keepalive="0" delay="0" sat="-1" icon="Router-2D-Gen-White-S.svg" config="0" left="981" top="681">
+        <interface id="0" name="e0/0" type="ethernet" network_id="2" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="16" name="e0/1" type="ethernet" network_id="4" vid="1" color="#3e7089" style="Solid" linkstyle="Straight" label="10.1.24.0/24" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+        <interface id="32" name="e0/2" type="ethernet" network_id="5" vid="1" labelpos="0.5" stub="0" width="2" curviness="10" beziercurviness="150" round="0" midpoint="0.5" srcpos="0.15" dstpos="0.85"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" smart="0" vlan8021ad="0" type="bridge" name="Net-R2iface_0" left="1041" top="406" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+      <network id="2" smart="0" vlan8021ad="0" type="bridge" name="Net-R4iface_0" left="1041" top="721" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+      <network id="3" smart="0" vlan8021ad="0" type="bridge" name="Net-R3iface_16" left="711" top="721" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+      <network id="4" smart="0" vlan8021ad="0" type="bridge" name="Net-R4iface_16" left="1041" top="721" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+      <network id="5" smart="0" vlan8021ad="0" type="bridge" name="Net-R4iface_32" left="1041" top="721" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+      <network id="6" smart="0" vlan8021ad="0" type="bridge" name="Net-R3iface_32" left="711" top="721" style="Solid" linkstyle="Straight" color="" label="" visibility="0" icon="lan.png"/>
+    </networks>
+  </topology>
+</lab>
