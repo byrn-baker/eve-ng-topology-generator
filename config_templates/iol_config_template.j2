@@ -1,0 +1,7 @@
+hostname {{ hostname }}
+
+{% for interface in interfaces %}
+interface {{ interface.name }}
+  ip address {{ interface.ip_subnet }} 255.255.255.0
+  no shutdown
+{% endfor %}

@@ -1,13 +1,12 @@
 # eve-ng-topology-generator
 Provide input for how many routers, their names, and connections, an overall prefix to use for the point to points and the template and image to use in EVE and this should generate a topology for you.
 
-The YAML file will include the router names and their interfaces plus IPs as well. 
+The YAML file will include the router names and their interfaces plus subnets. The UNL file includes a startup configuration with the hostname set and the interface addresses set.
 
+## Things to keep in mind
+I've only tested this with IOL templates in EVE and I am only generating startup configs in the IOS fashion.
 
-## Things to add.
-I've really only tested this with IOL so I need to make some updates or selection on interface names at some point
-
-
+At some point I will figure out a better way to include more templates and get the interface names set appropriately as well. At this point I am pushing the limits of my abilities to code this, but as I learn I will update. 
 
 ## Example inputs
 ```bash
@@ -57,3 +56,10 @@ R5: ['e0/0', 'e0/1', 'e0/2', 'e0/3', 'e1/0']
 R6: ['e0/0', 'e0/1', 'e0/2', 'e0/3', 'e1/0']
 YAML file generated: test.yaml
 ```
+
+Current output of the topology when copied to your EVE server
+[topology](screenshots/topology.png)
+
+
+What the startup configuration will look like
+[startup_config](screenshots/startup_config.png)

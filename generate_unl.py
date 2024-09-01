@@ -1,9 +1,15 @@
 import os
+import re
 import yaml
 import ipaddress
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import uuid
+import base64
+import jinja2
+import netaddr
+import ipaddress
+
 
 def load_template(template_name):
     """Load template configuration from YAML file."""
@@ -36,36 +42,49 @@ def get_connections(routers):
     return connections
 
 def get_prefix():
-    """Get prefix from user"""
+    """Get prefix from user with a default value."""
     while True:
         try:
-            prefix = input("Enter prefix (e.g., 10.0.0.0/16): ")
+            prefix = input("Enter prefix (e.g., 10.0.0.0/16): ").strip() or "10.0.0.0/16"
             return ipaddress.ip_network(prefix, strict=False)
         except ValueError:
             print("Invalid IP network. Please try again.")
+
 
 def get_lab_name():
     """Get lab name from user"""
     return input("Enter lab name: ")
 
+
 def get_eve_ng_template():
-    """Get EVE-NG template from user"""
-    return input("Enter EVE-NG template (e.g., iol): ")
+    """Get EVE-NG template from user with a default value."""
+    template = input("Enter EVE-NG template (e.g., iol): ")
+    return template.strip() or "iol"
 
 def get_eve_ng_image():
-    """Get EVE-NG image from user"""
-    return input("Enter EVE-NG image (e.g., x86_64_crb_linux-adventerprisek9-ms.bin): ")
+    """Get EVE-NG image from user with a default value."""
+    image = input("Enter EVE-NG image (e.g., x86_64_crb_linux-adventerprisek9-ms.bin): ")
+    return image.strip() or "x86_64_crb_linux-adventerprisek9-ms.bin"
 
-def generate_subnets(prefix, connections, routers):
-    """Generate subnets for each connection"""
+def generate_subnets(prefix, connections):
+    """Generate subnets for each connection with correctly formatted subnet labels."""
     subnets = {}
-    subnet_generator = prefix.subnets(new_prefix=24)
+    subnet_generator = ipaddress.IPv4Network(prefix).subnets(new_prefix=24)
+    
     for connection in connections:
-        subnet = next(subnet_generator)
-        router1_index = routers.index(connection[0]) + 1
-        router2_index = routers.index(connection[1]) + 1
-        label = f"{subnet.network_address}.{router1_index}{router2_index}.0/24"
-        subnets[connection] = label
+        try:
+            subnet = next(subnet_generator)
+            # Format subnet label
+            subnet_label = f"{subnet.network_address}/{subnet.prefixlen}"
+            
+            # Store the subnet label for the connection
+            subnets[connection] = {
+                'subnet_label': subnet_label
+            }
+        except StopIteration:
+            print("Ran out of subnets.")
+            break
+    
     return subnets
 
 def generate_unl_file(lab_name, routers, connections, subnets, template_name, image):
@@ -169,7 +188,10 @@ def generate_unl_file(lab_name, routers, connections, subnets, template_name, im
         network.set("style", "Solid")
         network.set("linkstyle", "Straight")
         network.set("color", "")
-        network.set("label", subnets[connection])
+        if connection in subnets:
+            subnet_info = subnets[connection]
+            subnet_label = subnet_info.get('subnet_label', 'default_label')
+            network.set("label", subnet_label)
         network.set("visibility", "0")
         network.set("icon", "lan.png")
 
@@ -185,25 +207,57 @@ def generate_unl_file(lab_name, routers, connections, subnets, template_name, im
                 break
 
         if router1_interface is not None and router2_interface is not None:
-            print(f"Setting network_id {network_id} for connection between {connection[0]} and {connection[1]}")
-            
-            # Update the XML to ensure network_id is properly added under the interface node
+            # print(f"Setting network_id {network_id} for connection between {connection[0]} and {connection[1]}")
             router1_interface.set("network_id", str(network_id))
             router1_interface.set("color", "#3e7089")
             router1_interface.set("style", "Solid")
             router1_interface.set("linkstyle", "Straight")
-            router1_interface.set("label", subnets[connection])
+            router1_interface.set("label", subnet_label)
             
             router2_interface.set("network_id", str(network_id))
             router2_interface.set("color", "#3e7089")
             router2_interface.set("style", "Solid")
             router2_interface.set("linkstyle", "Straight")
-            router2_interface.set("label", subnets[connection])
+            router2_interface.set("label", subnet_label)
 
         else:
             print(f"Warning: Could not find interfaces for connection {connection}")
 
         network_id += 1
+
+    # Generate startup configurations
+    objects = ET.SubElement(lab, "objects")
+    configs = ET.SubElement(objects, "configs")
+
+    # Create Jinja2 environment and load template
+    jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader('config_templates'))
+    # print(subnets)
+    for node in lab.findall(".//node"):
+        router_id = node.get("id")
+        router_name = node.get("name")
+
+        interfaces = []
+        for interface in router_interfaces[router_name]:
+            name = interface.get("name")
+            network_id = interface.get("network_id")
+            interface_label = interface.get("label")
+            network = ipaddress.IPv4Network(interface_label, strict=False)
+            number = int(re.search(r'\d+', router_name).group())
+            
+            interfaces.append({"name": name, "ip_subnet": str(network.network_address + number)})
+
+        # Load and render the template with subnet information
+        jinja_template = jinja_env.get_template('iol_config_template.j2')
+        config = jinja_template.render(hostname=router_name, interfaces=interfaces)
+        
+        # Encode the configuration to base64
+        encoded_config = base64.b64encode(config.encode()).decode()
+        
+        # Save the configuration in the XML
+        config_element = ET.SubElement(configs, "config")
+        config_element.set("id", router_id)
+        config_element.text = encoded_config
+
 
     tree = ET.ElementTree(lab)
     xmlstr = minidom.parseString(ET.tostring(tree.getroot())).toprettyxml(indent="   ")
@@ -216,20 +270,31 @@ def generate_unl_file(lab_name, routers, connections, subnets, template_name, im
         print(f"{router}: {[interface.get('name') for interface in interfaces]}")
 
     # Generate YAML output
-    yaml_data = {"nodes": {}}
+    yaml_data = {"nodes": []}
     for router in routers:
-        yaml_data["nodes"][router] = {}
+        node_entry = {"name": router, "interfaces": []}
         for interface in router_interfaces[router]:
+            interface_name = interface.get("name")
             # Ensure label is set before adding to YAML
-            if interface.get("label"):
-                yaml_data["nodes"][router][interface.get("name")] = interface.get("label")
-            else:
-                yaml_data["nodes"][router][interface.get("name")] = "No Label"
+            subnet_label = interface.get("label", "No Label")
+            node_entry["interfaces"].append({
+                "name": interface_name,
+                "subnet": subnet_label
+            })
+        yaml_data["nodes"].append(node_entry)
 
     with open(f"{lab_name}.yaml", "w") as f:
         yaml.dump(yaml_data, f, default_flow_style=False)
 
     print(f"YAML file generated: {lab_name}.yaml")
+
+    # Save the final XML with configurations
+    final_tree = ET.ElementTree(lab)
+    final_xmlstr = minidom.parseString(ET.tostring(final_tree.getroot())).toprettyxml(indent="   ")
+    with open(unl_file, "w") as f:
+        f.write(final_xmlstr)
+
+    print(f"Updated .unl file with startup configurations generated: {unl_file}")
 
 def main():
     lab_name = get_lab_name()
@@ -238,7 +303,7 @@ def main():
     prefix = get_prefix()
     template_name = get_eve_ng_template()
     image = get_eve_ng_image()
-    subnets = generate_subnets(prefix, connections, routers)
+    subnets = generate_subnets(prefix, connections)
     generate_unl_file(lab_name, routers, connections, subnets, template_name, image)
 
 if __name__ == "__main__":
