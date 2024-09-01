@@ -58,8 +58,8 @@ YAML file generated: test.yaml
 ```
 
 Current output of the topology when copied to your EVE server
-[topology](screenshots/topology.png)
+<img src="screenshots/topology.png" alt="">
 
 
 What the startup configuration will look like
-[startup_config](screenshots/startup_config.png)
+<img src="screenshots/startup_config.png" alt="">
