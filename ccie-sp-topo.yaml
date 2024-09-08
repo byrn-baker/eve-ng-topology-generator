@@ -1,0 +1,593 @@
+routers:
+  - name: X-ASBR1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.3.2/24
+        ipv6: 2620:fc7:1103::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/1
+        ipv4: 1.101.8.1/24
+        ipv6: 2620:fc7:1108::1/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/2
+        ipv4: 1.101.14.1/24
+        ipv6: 2620:fc7:1114::1/64
+        connect_to: X-ASBR2
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/3
+        ipv4: 10.1.101.1/24
+        ipv6: 2620:fc7:2221::1/64
+        connect_to: Y-ASBR1
+        connect_to_int: Gi0/0/0/2
+  - name: X-ASBR2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.4.2/24
+        ipv6: 2620:fc7:1104::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi0/0/0/1
+        ipv4: 1.101.9.2/24
+        ipv6: 2620:fc7:1109::2/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/2
+        ipv4: 1.101.14.2/24
+        ipv6: 2620:fc7:1114::2/64
+        connect_to: X-ASBR1
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/4
+        ipv4: 10.1.102.2/24
+        ipv6: 2620:fc7:2222::2/64
+        connect_to: Y-ASBR2
+        connect_to_int: Gi0/0/0/1
+  - name: X-CE1
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi2
+        ipv4: 172.101.1.2/24
+        ipv6: 2620:fc7:172:1101::2/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi3
+        ipv4: 172.101.4.1/24
+        ipv6: 2620:fc7:172:1104::1/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/5
+      - name: Gi4
+        ipv4: 10.11.1.1/24
+        ipv6: 2620:fc7:101:1101::1/64
+        connect_to: X-CE2
+        connect_to_int: Gi4
+  - name: X-CE2
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi2
+        ipv4: 172.101.2.1/24
+        ipv6: 2620:fc7:172:1102::1/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/5
+      - name: Gi3
+        ipv4: 172.101.3.2/24
+        ipv6: 2620:fc7:172:1103::2/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/4
+      - name: Gi4
+        ipv4: 10.11.1.2/24
+        ipv6: 2620:fc7:101:1101::2/64
+        connect_to: X-CE1
+        connect_to_int: Gi4
+  - name: X-CE3
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 172.203.1.1/24
+        ipv6: 2620:fc7:172:2031::1/64
+        connect_to: X-PE3
+        connect_to_int: Gi0/0/0/3
+  - name: X-CE4
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 172.204.1.4/24
+        ipv6: 2620:fc7:172:2041::4/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/6
+  - name: X-CE5
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 172.205.1.5/24
+        ipv6: 2620:fc7:172:2051::5/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/5
+  - name: X-CE6
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 172.206.1.6/24
+        ipv6: 2620:fc7:172:2061::6/64
+        connect_to: X-PE4
+        connect_to_int: Gi0/0/0/3
+  - name: X-P1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.1.1/24
+        ipv6: 2620:fc7:1101::1/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 1.101.2.1/24
+        ipv6: 2620:fc7:1102::1/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/2
+        ipv4: 1.101.3.1/24
+        ipv6: 2620:fc7:1103::1/64
+        connect_to: X-ASBR1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/3
+        ipv4: 1.101.3.1/24
+        ipv6: 2620:fc7:1103::1/64
+        connect_to: X-ASBR2
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/4
+        ipv4: 1.101.5.1/24
+        ipv6: 2620:fc7:1105::1/64
+        connect_to: X-PCE1-RR1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/5
+        ipv4: 1.101.11.1/24
+        ipv6: 2620:fc7:1111::1/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/5
+      - name: Gi0/0/0/6
+        ipv4: 1.101.17.1/24
+        ipv6: 2620:fc7:1117::1/64
+        connect_to: X-P3
+        connect_to_int: Gi0/0/0/1
+  - name: X-P2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.8.2/24
+        ipv6: 2620:fc7:1108::2/64
+        connect_to_int: Gi0/0/0/1
+        connect_to: X-ASBR1
+      - name: Gi0/0/0/1
+        ipv4: 1.101.9.1/24
+        ipv6: 2620:fc7:1109::1/64
+        connect_to: X-ASBR2
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/2
+        ipv4: 1.101.6.2/24
+        ipv6: 2620:fc7:1106::2/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/3
+        ipv4: 1.101.7.2/24
+        ipv6: 2620:fc7:1107::2/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/4
+        ipv4: 1.101.10.1/24
+        ipv6: 2620:fc7:1110::1/64
+        connect_to: X-PCE2-RR2
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/5
+        ipv4: 1.101.11.2/24
+        ipv6: 2620:fc7:1111::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/5
+      - name: Gi0/0/0/6
+        ipv4: 1.101.18.2/24
+        ipv6: 2620:fc7:1118::2/64
+        connect_to: X-P4
+        connect_to_int: Gi0/0/0/1
+  - name: X-P3
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.12.3/24
+        ipv6: 2620:fc7:1112::3/64
+        connect_to: X-P4
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 1.101.17.3/24
+        ipv6: 2620:fc7:1117::3/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/2
+        ipv4: 1.101.19.3/24
+        ipv6: 2620:fc7:1119::3/64
+        connect_to: X-PE3
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/3
+        ipv4: 1.101.22.3/24
+        ipv6: 2620:fc7:1122::3/64
+        connect_to: X-PE4
+        connect_to_int: Gi0/0/0/4
+  - name: X-P4
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.12.4/24
+        ipv6: 2620:fc7:1112::4/64
+        connect_to: X-P3
+        connect_to_int: Gi0/0/0/4
+      - name: Gi0/0/0/1
+        ipv4: 1.101.18.4/24
+        ipv6: 2620:fc7:1118::4/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/6
+      - name: Gi0/0/0/2
+        ipv4: 1.101.20.4/24
+        ipv6: 2620:fc7:1120::4/64
+        connect_to: X-PE4
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/3
+        ipv4: 1.101.23.4/24
+        ipv6: 2620:fc7:1123::4/64
+        connect_to: X-PE3
+        connect_to_int: Gi0/0/0/4
+  - name: X-PECE1-RR1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.5.2/24
+        ipv6: 2620:fc7:1105::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/4
+      - name: Gi0/0/0/1
+        ipv4: 1.101.15.1/24
+        ipv6: 2620:fc7:1115::1/64
+        connect_to: X-PCE2-RR2
+        connect_to_int: Gi0/0/0/1
+  - name: X-PECE2-RR2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.10.2/24
+        ipv6: 2620:fc7:1110::2/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/4
+      - name: Gi0/0/0/1
+        ipv4: 1.101.15.2/24
+        ipv6: 2620:fc7:1115::2/64
+        connect_to: X-PCE1-RR1
+        connect_to_int: Gi0/0/0/1
+  - name: X-PE1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.1.2/24
+        ipv6: 2620:fc7:1101::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 1.101.6.1/24
+        ipv6: 2620:fc7:1106::1/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/2
+        ipv4: 1.101.13.1/24
+        ipv6: 2620:fc7:1113::1/64
+        connect_to: X-PE2
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/3
+        ipv4: 172.101.1.1/24
+        ipv6: 2620:fc7:172:1101::1/64
+        connect_to: X-CE1
+        connect_to_int: Gi2
+      - name: Gi0/0/0/4
+        ipv4: 172.101.3.1/24
+        ipv6: 2620:fc7:172:1103::1/64
+        connect_to: X-CE2
+        connect_to_int: Gi3
+      - name: Gi0/0/0/5
+        ipv4: 172.205.1.1/24
+        ipv6: 2620:fc7:172:2051::1/64
+        connect_to: X-CE5
+        connect_to_int: Gi0/0/0/0
+  - name: X-PE2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.2.2/24
+        ipv6: 2620:fc7:1102::2/64
+        connect_to: X-P1
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/1
+        ipv4: 1.101.7.1/24
+        ipv6: 2620:fc7:1107::1/64
+        connect_to: X-P2
+        connect_to_int: Gi0/0/0/3
+      - name: Gi0/0/0/2
+        ipv4: 1.101.13.2/24
+        ipv6: 2620:fc7:1113::2/64
+        connect_to: X-PE1
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/4
+        ipv4: 172.101.2.2/24
+        ipv6: 2620:fc7:172:1102::2/64
+        connect_to: X-CE2
+        connect_to_int: Gi2
+      - name: Gi0/0/0/5
+        ipv4: 172.101.4.2/24
+        ipv6: 2620:fc7:172:1104::2/64
+        connect_to: X-CE1
+        connect_to_int: Gi3
+      - name: Gi0/0/0/6
+        ipv4: 172.204.1.2/24
+        ipv6: 2620:fc7:172:2041::2/64
+        connect_to: X-CE4
+        connect_to_int: Gi0/0/0/0
+  - name: X-PE3
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.16.3/24
+        ipv6: 2620:fc7:1116::3/64
+        connect_to: X-PE4
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 1.101.19.1/24
+        ipv6: 2620:fc7:1119::1/64
+        connect_to: X-P3
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/2
+        ipv4: 1.101.21.3/24
+        ipv6: 2620:fc7:1121::3/64
+        connect_to: X-PE4
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/3
+        ipv4: 172.203.1.3/24
+        ipv6: 2620:fc7:172:2031::3/64
+        connect_to: X-CE3
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/4
+        ipv4: 1.101.23.3/24
+        ipv6: 2620:fc7:1123::3/64
+        connect_to: X-P4
+        connect_to_int: Gi0/0/0/3
+  - name: X-PE4
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 1.101.16.4/24
+        ipv6: 2620:fc7:1116::4/64
+        connect_to: X-PE3
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 1.101.20.1/24
+        ipv6: 2620:fc7:1120::1/64
+        connect_to: X-P4
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/2
+        ipv4: 1.101.21.4/24
+        ipv6: 2620:fc7:1121::4/64
+        connect_to: X-PE3
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/3
+        ipv4: 172.206.1.4/24
+        ipv6: 2620:fc7:172:2061::4/64
+        connect_to: X-CE6
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/4
+        ipv4: 1.101.22.4/24
+        ipv6: 2620:fc7:1122::4/64
+        connect_to: X-P3
+        connect_to_int: Gi0/0/0/3
+  - name: Y-ASBR1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 2.201.1.1/24
+        ipv6: 2620:fc7:2201::1/64
+        connect_to: Y-ASBR2
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 2.201.2.1/24
+        ipv6: 2620:fc7:2202::1/64
+        connect_to: Y-P1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/2
+        ipv4: 10.1.101.2/24
+        ipv6: 2620:fc7:2221::2/64
+        connect_to: X-ASBR1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi0/0/0/3
+        ipv4: 172.222.3.1/24
+        ipv6: 2620:fc7:172:2223::2/64
+        connect_to: Y-CE2
+        connect_to_int: Gi1
+  - name: Y-ASBR2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 2.201.1.2/24
+        ipv6: 2620:fc7:2201::2/64
+        connect_to: Y-ASBR1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/1
+        ipv4: 10.1.102.2/24
+        ipv6: 2620:fc7:2222::2/64
+        connect_to: X-ASBR2
+        connect_to_int: Gi0/0/0/4
+      - name: Gi0/0/0/2
+        ipv4: 2.201.4.2/24
+        ipv6: 2620:fc7:2204::2/64
+        connect_to: Y-P1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/3
+        ipv4: 172.222.4.2/24
+        ipv6: 2620:fc7:172:2225::2/64
+        connect_to: Y-CE3
+        connect_to_int: Gi1
+  - name: Y-CE1
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi1
+        ipv4: 172.222.1.2/24
+        ipv6: 2620:fc7:172:2221::2/64
+        connect_to: Y-PE1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi2
+        ipv4: 172.222.2.1/24
+        ipv6: 2620:fc7:172:2222::1/64
+        connect_to: Y-PE2
+        connect_to_int: Gi0/0/0/2
+  - name: Y-CE2
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi1
+        ipv4: 172.222.3.2/24
+        ipv6: 2620:fc7:172:2223::2/64
+        connect_to: Y-ASBR1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi2
+        ipv4: 172.222.4.2/24
+        ipv6: 2620:fc7:172:2224::2/64
+        connect_to: Y-PE1
+        connect_to_int: Gi0/0/0/2
+  - name: Y-CE3
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi1
+        ipv4: 172.222.5.3/24
+        ipv6: 2620:fc7:172:2225::3/64
+        connect_to: Y-ASBR2
+        connect_to_int: Gi0/0/0/3
+      - name: Gi2
+        ipv4: 172.222.6.3/24
+        ipv6: 2620:fc7:172:2226::3/64
+        connect_to: Y-PE2
+        connect_to_int: Gi0/0/0/3
+  - name: Y-CE4
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 172.222.7.4/24
+        ipv6: 2620:fc7:172:2227::4/64
+        connect_to: Y-PE2
+        connect_to_int: Gi0/0/0/4
+  - name: Y-P1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 2.201.2.2/24
+        ipv6: 2620:fc7:2202::2/64
+        connect_to: Y-ASBR1
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/1
+        ipv4: 2.201.4.1/24
+        ipv6: 2620:fc7:2204::1/64
+        connect_to: Y-ASBR2
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/2
+        ipv4: 2.201.5.1/24
+        ipv6: 2620:fc7:2205::1/64
+        connect_to: Y-PE1
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/3
+        ipv4: 2.201.6.1/24
+        ipv6: 2620:fc7:2206::1/64
+        connect_to: Y-PE3
+        connect_to_int: Gi0/0/0/0
+      - name: Gi0/0/0/4
+        ipv4: 2.201.7.1/24
+        ipv6: 2620:fc7:2207::1/64
+        connect_to: Y-RR1
+        connect_to_int: Gi1
+  - name: Y-PE1
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 2.201.5.2/24
+        ipv6: 2620:fc7:2205::2/64
+        connect_to: Y-P1
+        connect_to_int: Gi0/0/0/2
+      - name: Gi0/0/0/1
+        ipv4: 2.201.3.1/24
+        ipv6: 2620:fc7:2203::1/64
+        connect_to: Y-PE2
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/2
+        ipv4: 172.222.4.1/24
+        ipv6: 2620:fc7:172:2224::1/64
+        connect_to: Y-CE2
+        connect_to_int: Gi2
+      - name: Gi0/0/0/3
+        ipv4: 172.222.1.1/24
+        ipv6: 2620:fc7:172:2221::1/64
+        connect_to: Y-CE1
+        connect_to_int: Gi1
+  - name: Y-PE2
+    type: "xrv9k"
+    image: "xrv9k-fukk9-7.11.1"
+    interfaces:
+      - name: Gi0/0/0/0
+        ipv4: 2.201.6.2/24
+        ipv6: 2620:fc7:2206::2/64
+        connect_to: Y-P1
+        connect_to_int: Gi0/0/0/3
+      - name: Gi0/0/0/1
+        ipv4: 2.201.3.2/24
+        ipv6: 2620:fc7:2203::2/64
+        connect_to: Y-PE1
+        connect_to_int: Gi0/0/0/1
+      - name: Gi0/0/0/2
+        ipv4: 172.222.2.2/24
+        ipv6: 2620:fc7:172:2222::2/64
+        connect_to: Y-CE1
+        connect_to_int: Gi2
+      - name: Gi0/0/0/3
+        ipv4: 172.222.6.2/24
+        ipv6: 2620:fc7:172:2226::2/64
+        connect_to: Y-CE3
+        connect_to_int: Gi2
+      - name: Gi0/0/0/4
+        ipv4: 172.222.7.2/24
+        ipv6: 2620:fc7:172:2227::2/64
+        connect_to: Y-CE4
+        connect_to_int: Gi0/0/0/0
+  - name: Y-RR1
+    type: "csr1000v"
+    image: "csr1000vng-universalk9.16.09.8.Fuji"
+    interfaces:
+      - name: Gi1
+        ipv4: 2.201.7.2/24
+        ipv6: 2620:fc7:2207::2/64
+        connect_to: Y-P1
+        connect_to_int: Gi0/0/0/4

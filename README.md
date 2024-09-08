@@ -1,15 +1,16 @@
 # eve-ng-topology-generator
-Provide input for how many routers, their names, and connections, an overall prefix to use for the point to points and the template and image to use in EVE and this should generate a topology for you.
-
-The YAML file will include the router names and their interfaces plus subnets. The UNL file includes a startup configuration with the hostname set and the interface addresses set.
+Provide input for how many routers, their names, and connections, an overall prefix to use for the point to points and the template and image to use in EVE and this should generate a topology for you. I've added another python script that takes the input from a yaml file for more complex topologies where it might be easier to manage the topology from a yaml. 
 
 ## Things to keep in mind
 I've only tested this with IOL templates in EVE and I am only generating startup configs in the IOS fashion.
 
 At some point I will figure out a better way to include more templates and get the interface names set appropriately as well. At this point I am pushing the limits of my abilities to code this, but as I learn I will update. 
 
-## Example inputs
+## Example inputs for generate_unl.py
+The YAML file will include the router names and their interfaces plus subnets. The UNL file includes a startup configuration with the hostname set and the interface addresses set.
+
 ```bash
+$ python generate_unl.py
 Enter lab name: test
 Enter the router name prefix: R
 Enter the number of routers: 6
@@ -63,3 +64,15 @@ Current output of the topology when copied to your EVE server
 
 What the startup configuration will look like
 <img src="screenshots/startup_config.png" alt="">
+
+
+## Example inputs for generate_unl_with_yaml.py
+I've added some logic to ensure that the routers are placed in squares to help make the intial topology less messy. However there is some moving around and re-arranging you will have to do to fit your needs.
+
+One small bug at this point if you have more than one interface between two routers it uses the same network_id for both interfaces on both routers. Trying to figure out how to fix this without breaking other stuff.
+```bash
+$ python gen_unl_with_yaml.py 
+Enter the name for the lab: ccie-sp
+Enter the name of the YAML file (including .yaml): ccie-sp-topo.yaml
+UNL file 'ccie-sp.unl' has been generated with a unique UUID and network labels.
+```
